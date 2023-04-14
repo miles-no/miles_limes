@@ -1,0 +1,128 @@
+openapi: 3.0.3
+info:
+  title: Miles consultants api
+  description: |-
+    sample internal miles api
+  version: 0.1.0
+servers:
+  - url: https://someappname.heruko.com
+tags:
+  - name: consultants
+    description: Api to retrieve consultants
+paths:
+  /consultants:
+    get:
+      tags:
+        - consultants
+      summary: Get consultants with optional filtering for office and role
+      description: Get a list of consultants
+      operationId: getConsultants
+      parameters:
+        - name: officeId
+          in: query
+          description: Office Id
+          required: false
+          schema:
+            type: string
+        - name: role
+          in: query
+          description: role name
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetConsultantResponse'
+        '400':
+          description: Bad Request
+        403:
+          description: Forbidden
+  /offices:
+    get:
+      tags:
+        - consultants
+      summary: Get list of offices
+      description: Get list of offices
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetOfficesResponse'
+components:
+  schemas:
+    GetConsultantResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Consultant'
+      required:
+        - list
+    Consultant:
+      type: object
+      properties:
+        name:
+          type: string
+        title:
+          type: string
+        roles:
+          type: array
+          items:
+             type: string
+        telephone:
+          type: string
+        office:
+          type: string
+        officeId:
+          type: string
+        country:
+          type: string
+          description: iso 2 country code
+        email:
+          type: string
+        imageUrlThumbnail:
+          type: string
+          format: uri
+        imageUrl:
+          type: string
+          format: uri
+      required:
+        - name
+        - office
+        - country
+        - roles
+    GetOfficesResponse:
+      type: object
+      properties:
+        list:
+          type: array
+          items:
+            $ref: '#/components/schemas/Office'
+      required:
+        - list
+    Office:
+      type: object
+      properties:
+        officeId:
+          type: string
+        name:
+          type: string
+        country:
+          type: string
+          description: iso 2 country code
+      required:
+        - officeId
+        - name
+        - country
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
