@@ -1,0 +1,18 @@
+quarkus:
+  log:
+    category:
+      '"org':
+        jboss:
+          resteasy:
+            reactive:
+              client:
+                logging":
+                  level: DEBUG
+      "io.quarkus.smallrye.jwt.runtime.auth.MpJwtValidator":
+        level: TRACE
+        min-level: TRACE
+  rest-client:
+    logging:
+      body-limit: 2000
+      scope: request-response
+

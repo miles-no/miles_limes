@@ -1,0 +1,19 @@
+app:
+  services:
+    consultants:
+      roles:
+        - name: name of role
+          id: id of role in cv partner
+
+quarkus:
+  openapi-generator:
+    codegen:
+      input-base-dir: src/main/resources/openapi/
+  rest-client:
+    cv-partner-api:
+      url: https://miles.cvpartner.com/api
+
+mp:
+  jwt:
+    verify:
+      issuer: https://internal.miles.no
