@@ -19,6 +19,7 @@ import static no.miles.services.consultants.controllers.mappers.ToGeneratedMappe
 @Consumes({"application/json"})
 @Produces({"application/json"})
 @RequestScoped
+@RolesAllowed({"User"})
 public class ConsultantsController {
 
     private final ConsultantsService consultantsService;
@@ -29,7 +30,6 @@ public class ConsultantsController {
 
     @GET
     @Path("/")
-    @RolesAllowed({"User"})
     public GetConsultantResponse getConsultants(
             @Context SecurityContext ctx,
             @QueryParam("officeId") List<String> officeId,
@@ -42,7 +42,6 @@ public class ConsultantsController {
 
     @GET
     @Path("/offices")
-    @PermitAll
     public GetOfficesResponse getOffices(
             @Context SecurityContext ctx
     ) {
