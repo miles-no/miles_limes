@@ -1,6 +1,7 @@
 app:
   services:
     consultants:
+      cache-refresh: 10m
       roles:
         - name: Arkitektur
           id: 6425649e5d697e0f43838a16

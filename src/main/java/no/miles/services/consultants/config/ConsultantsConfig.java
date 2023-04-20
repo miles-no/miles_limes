@@ -11,6 +11,8 @@ public interface ConsultantsConfig {
     @WithName("roles")
     List<ConfigRole> configRoles();
 
+    String cacheRefresh();
+
     default List<Role> roles() {
         return configRoles().stream().map(configRole -> new Role(configRole.name(), configRole.id())).toList();
     }
