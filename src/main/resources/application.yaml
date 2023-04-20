@@ -2,8 +2,28 @@ app:
   services:
     consultants:
       roles:
-        - name: name of role
-          id: id of role in cv partner
+        - name: Arkitektur
+          id: 6425649e5d697e0f43838a16
+        - name: Backend
+          id: 64256492480fb50f7b17c2a7
+        - name: Data Science
+          id: 642565189b513710125e3deb
+        - name: Design
+          id: 642564b29b513710125e3dd4
+        - name: Frontend
+          id: 642564849b513710265e3c2c
+        - name: Prosjektledelse
+          id: 642564c1d658eb0f9fd23aa0
+        - name: Rådgivning
+          id: 642565049b51370fe35e3c82
+        - name: Smidig
+          id: 642564e35604610f9f3b9ed9
+        - name: Testledelse
+          id: 642564d15604610f9d3b9dbc
+        - name: Tjenerteam
+          id: 642565235d697e0f34838b2e
+        - name: Utvikling
+          id: 6425646e5604610f973b9d9
 
 quarkus:
   openapi-generator:
