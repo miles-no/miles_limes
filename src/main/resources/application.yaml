@@ -27,12 +27,11 @@ app:
           id: 6425646e5604610f973b9d9
 
 quarkus:
+  http:
+    port: ${PORT:8080}
   openapi-generator:
     codegen:
       input-base-dir: src/main/resources/openapi/
-  rest-client:
-    cv-partner-api:
-      url: https://miles.cvpartner.com/api
 
 mp:
   jwt:
