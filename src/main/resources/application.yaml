@@ -26,14 +26,22 @@ app:
         - name: Utvikling
           id: 6425646e5604610f973b9d9
 
+integrations:
+  cv-partner:
+    apikey: Token token=${CV_PARTNER_API_KEY}
+
+mp:
+  jwt:
+    verify:
+      issuer: ${KEY_ISSUER}
+      publickey: ${KEY_PUBLIC}
+
 quarkus:
   http:
     port: ${PORT:8080}
   openapi-generator:
     codegen:
       input-base-dir: src/main/resources/openapi/
-
-mp:
-  jwt:
-    verify:
-      issuer: https://internal.miles.no
+  rest-client:
+    cv-partner-api:
+      url: ${CV_PARTNER_URL}
