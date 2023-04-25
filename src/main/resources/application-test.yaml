@@ -1,3 +1,18 @@
+app:
+  services:
+    consultants:
+      cache-refresh: off
+
+integrations:
+  cv-partner:
+    apikey: dummy
+
+mp:
+  jwt:
+    verify:
+      issuer: dummy
+      publickey: dummy
+
 quarkus:
   log:
     category:
@@ -7,6 +22,8 @@ quarkus:
         level: TRACE
         min-level: TRACE
   rest-client:
+    cv-partner-api:
+      url: dummy
     logging:
       body-limit: 20000
       scope: request-response
