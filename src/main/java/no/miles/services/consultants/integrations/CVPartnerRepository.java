@@ -4,13 +4,14 @@ import no.miles.services.consultants.integrations.models.CV;
 import no.miles.services.consultants.integrations.models.CVMetaData;
 import no.miles.services.consultants.integrations.models.Country;
 import no.miles.services.consultants.integrations.models.SearchCVsRequest;
-import no.miles.services.consultants.models.Consultant;
-import no.miles.services.consultants.models.Office;
-import no.miles.services.consultants.models.Role;
+import no.miles.services.consultants.domain.Consultant;
+import no.miles.services.consultants.domain.Office;
+import no.miles.services.consultants.domain.Role;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
+import java.util.Set;
 
 @ApplicationScoped
 public class CVPartnerRepository {
@@ -31,16 +32,12 @@ public class CVPartnerRepository {
                 .toList();
 
         if (office != null) {
-            consultants.forEach(consultant -> consultant
-                    .office(office.name())
-                    .officeId(office.officeId())
-                    .country(office.country())
-            );
+            consultants.forEach(consultant -> consultant.office(office));
         }
 
         if (role != null) {
             consultants.forEach(consultant -> consultant
-                    .roles(List.of(role))
+                    .roles(Set.of(role))
             );
         }
 

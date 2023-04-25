@@ -1,6 +1,6 @@
 package no.miles.services.consultants.integrations.models;
 
-import no.miles.services.consultants.models.Consultant;
+import no.miles.services.consultants.domain.Consultant;
 
 public record CV(
         Image image,

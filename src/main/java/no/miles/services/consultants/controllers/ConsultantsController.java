@@ -1,10 +1,9 @@
 package no.miles.services.consultants.controllers;
 
-import no.miles.services.consultants.services.ConsultantsService;
+import no.miles.services.consultants.CachedConsultantService;
 import org.openapi.quarkus.consultants_yaml.model.GetConsultantResponse;
 import org.openapi.quarkus.consultants_yaml.model.GetOfficesResponse;
 
-import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.*;
@@ -22,10 +21,10 @@ import static no.miles.services.consultants.controllers.mappers.ToGeneratedMappe
 @RolesAllowed({"User"})
 public class ConsultantsController {
 
-    private final ConsultantsService consultantsService;
+    private final CachedConsultantService cachedConsultantService;
 
-    public ConsultantsController(ConsultantsService consultantsService) {
-        this.consultantsService = consultantsService;
+    public ConsultantsController(CachedConsultantService cachedConsultantService) {
+        this.cachedConsultantService = cachedConsultantService;
     }
 
     @GET
@@ -35,7 +34,7 @@ public class ConsultantsController {
             @QueryParam("officeId") List<String> officeId,
             @QueryParam("role") List<String> role
     ) {
-        var consultants = consultantsService.getConsultants(officeId, role);
+        var consultants = cachedConsultantService.getConsultants(officeId, role);
 
         return new GetConsultantResponse()._list(toGeneratedConsultant(consultants));
     }
@@ -45,7 +44,7 @@ public class ConsultantsController {
     public GetOfficesResponse getOffices(
             @Context SecurityContext ctx
     ) {
-        var offices = consultantsService.getOffices();
+        var offices = cachedConsultantService.getOffices();
 
         return new GetOfficesResponse()._list(toGeneratedOffice(offices));
     }

@@ -1,8 +1,8 @@
-package no.miles.services.consultants.config;
+package no.miles.services.consultants;
 
 import io.smallrye.config.ConfigMapping;
 import io.smallrye.config.WithName;
-import no.miles.services.consultants.models.Role;
+import no.miles.services.consultants.domain.Role;
 
 import java.util.List;
 

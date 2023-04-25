@@ -1,11 +1,11 @@
-package no.miles.services.consultants.models;
+package no.miles.services.consultants.domain;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Data
 @Accessors(fluent = true)
@@ -13,11 +13,9 @@ public final class Consultant {
     private String name;
     private String consultantId;
     private String title;
-    private List<Role> roles = new ArrayList<>();
+    private Set<Role> roles = new HashSet<>();
     private String telephone;
-    private String office;
-    private String officeId;
-    private String country;
+    private Office office;
     private String email;
     private String imageUrlThumbnail;
     private String imageUrl;
@@ -33,5 +31,16 @@ public final class Consultant {
     @Override
     public int hashCode() {
         return Objects.hash(consultantId);
+    }
+
+    public Consultant merge(Consultant c) {
+        if (c.roles() != null) {
+            roles.addAll(c.roles());
+        }
+        if (c.office() != null) {
+            office = c.office();
+        }
+
+        return this;
     }
 }
