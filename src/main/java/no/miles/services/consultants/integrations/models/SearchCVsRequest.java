@@ -1,7 +1,7 @@
 package no.miles.services.consultants.integrations.models;
 
-import no.miles.services.consultants.models.Office;
-import no.miles.services.consultants.models.Role;
+import no.miles.services.consultants.domain.Office;
+import no.miles.services.consultants.domain.Role;
 
 import java.util.List;
 

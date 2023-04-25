@@ -1,8 +1,8 @@
 package no.miles.services.consultants.integrations;
 
 import io.quarkus.test.junit.QuarkusTest;
-import no.miles.services.consultants.models.Office;
-import no.miles.services.consultants.models.Role;
+import no.miles.services.consultants.domain.Office;
+import no.miles.services.consultants.domain.Role;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 

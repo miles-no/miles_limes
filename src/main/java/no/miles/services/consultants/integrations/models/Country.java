@@ -1,6 +1,6 @@
 package no.miles.services.consultants.integrations.models;
 
-import no.miles.services.consultants.models.Office;
+import no.miles.services.consultants.domain.Office;
 
 import java.util.List;
 
