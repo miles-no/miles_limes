@@ -13,6 +13,10 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Integration to CVPartner API.
+ * Docs: <a href="https://docs.cvpartner.com/Introduction">https://docs.cvpartner.com/Introduction</a>
+ */
 @ApplicationScoped
 public class CVPartnerRepository {
 
