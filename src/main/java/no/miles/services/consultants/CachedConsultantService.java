@@ -57,7 +57,7 @@ public class CachedConsultantService {
 
     @NotNull
     public List<Consultant> getConsultants() {
-        return getConsultantsInternal().toList();
+        return getConsultants(null, null);
     }
 
     private ConsultantCollection getConsultantsInternal() {
