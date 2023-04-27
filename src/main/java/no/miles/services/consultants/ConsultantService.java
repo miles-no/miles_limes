@@ -2,6 +2,7 @@ package no.miles.services.consultants;
 
 import no.miles.services.consultants.domain.ConsultantCollection;
 import no.miles.services.consultants.domain.Office;
+import no.miles.services.consultants.domain.Role;
 import no.miles.services.consultants.integrations.CVPartnerRepository;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -11,11 +12,8 @@ import java.util.List;
 public class ConsultantService {
     private final CVPartnerRepository cvPartnerRepository;
 
-    private final ConsultantsConfig consultantsConfig;
-
-    public ConsultantService(CVPartnerRepository cvPartnerRepository, ConsultantsConfig consultantsConfig) {
+    public ConsultantService(CVPartnerRepository cvPartnerRepository) {
         this.cvPartnerRepository = cvPartnerRepository;
-        this.consultantsConfig = consultantsConfig;
     }
 
     public ConsultantCollection getConsultants() {
@@ -23,7 +21,7 @@ public class ConsultantService {
                 .flatMap(office -> cvPartnerRepository.searchConsultants(office, null).stream())
                 .toList();
 
-        var consultantsWithRoles = consultantsConfig.roles().stream()
+        var consultantsWithRoles = Role.values.stream()
                 .flatMap(role -> cvPartnerRepository.searchConsultants(null, role).stream())
                 .toList();
 

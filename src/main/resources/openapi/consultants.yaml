@@ -33,7 +33,16 @@ paths:
           schema:
             type: array
             items:
+              $ref: '#/components/schemas/Role'
+        - name: email
+          in: query
+          description: email of consultant
+          required: false
+          schema:
+            type: array
+            items:
               type: string
+              format: email
       responses:
         '200':
           description: Successful operation
@@ -60,7 +69,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetOfficesResponse'
 security:
-  - app_key: []
+  - app_key: [ ]
 components:
   schemas:
     GetConsultantResponse:
@@ -82,7 +91,7 @@ components:
         roles:
           type: array
           items:
-             type: string
+            $ref: '#/components/schemas/Role'
         telephone:
           type: string
         office:
@@ -128,6 +137,20 @@ components:
         - officeId
         - name
         - country
+    Role:
+      type: string
+      enum:
+        - ARCHITECTURE
+        - BACKEND
+        - FRONTEND
+        - DATA_SCIENCE
+        - DESIGN
+        - PROJECT_MANAGEMENT
+        - ADVISORY
+        - AGILE
+        - TEST_MANAGEMENT
+        - SERVANT_TEAM
+        - DEVELOPMENT
   securitySchemes:
     app_key:
       type: apiKey
