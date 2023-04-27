@@ -33,9 +33,8 @@ class ConsultantCollectionTest {
 
     @Test
     void merge_should_updateConsultantsWithOffice_when_givenConsultantWithOfficeAndConsultantAlreadyInCollection() {
-        var role = new Role("role", "roleId");
         var office = new Office("officeId", "office", "no");
-        var consultantWithoutOffice = FakeConsultant.makeConsultant("consultant", List.of(role), null);
+        var consultantWithoutOffice = FakeConsultant.makeConsultant("consultant", List.of(Role.BACKEND), null);
         var cc = ConsultantCollection.from(List.of(consultantWithoutOffice));
 
         var sameConsultantWithOffice = FakeConsultant.makeConsultant("consultant", null, office);
@@ -45,35 +44,32 @@ class ConsultantCollectionTest {
         assertEquals(1, cc.toList().size(), "duplicate or missing consultant");
         assertEquals("consultant", cc.toList().get(0).consultantId());
         assertEquals(office, cc.toList().get(0).office());
-        assertEquals(Set.of(role), cc.toList().get(0).roles());
+        assertEquals(Set.of(Role.BACKEND), cc.toList().get(0).roles());
     }
 
     @Test
     void merge_should_updateConsultantsWithRole_when_givenConsultantWithRoleAndConsultantAlreadyInCollection() {
-        var role = new Role("role", "roleId");
         var office = new Office("officeId", "office", "no");
         var consultantWithoutRole = FakeConsultant.makeConsultant("consultant", null, office);
         var cc = ConsultantCollection.from(List.of(consultantWithoutRole));
 
-        var sameConsultantWithRole = FakeConsultant.makeConsultant("consultant", List.of(role), null);
+        var sameConsultantWithRole = FakeConsultant.makeConsultant("consultant", List.of(Role.BACKEND), null);
 
         cc.merge(List.of(sameConsultantWithRole));
 
         assertEquals(1, cc.toList().size(), "duplicate or missing consultant");
         assertEquals("consultant", cc.toList().get(0).consultantId());
         assertEquals(office, cc.toList().get(0).office());
-        assertEquals(Set.of(role), cc.toList().get(0).roles());
+        assertEquals(Set.of(Role.BACKEND), cc.toList().get(0).roles());
     }
 
     @Test
     void filterRoles_should_ReturnOnlyConsultantsWithRole_when_roleGiven() {
         var office = new Office("officeId", "office", "no");
-        var wantedRole = new Role("wantedRole", "wantedRoleId");
-        var unwantedRole = new Role("unwantedRole", "unwantedRoleId");
 
-        var consultantWithRole = FakeConsultant.makeConsultant("with role", List.of(wantedRole), office);
-        var consultantWithoutRole = FakeConsultant.makeConsultant("without role", List.of(unwantedRole), office);
-        var consultantWithMultipleRoles = FakeConsultant.makeConsultant("with multiple roles", List.of(wantedRole, unwantedRole), office);
+        var consultantWithRole = FakeConsultant.makeConsultant("with role", List.of(Role.BACKEND), office);
+        var consultantWithoutRole = FakeConsultant.makeConsultant("without role", List.of(Role.FRONTEND), office);
+        var consultantWithMultipleRoles = FakeConsultant.makeConsultant("with multiple roles", List.of(Role.BACKEND, Role.FRONTEND), office);
 
         var cc = ConsultantCollection.from(List.of(
                 consultantWithRole,
@@ -81,7 +77,7 @@ class ConsultantCollectionTest {
                 consultantWithMultipleRoles
         ));
 
-        var result = cc.filterRoles(List.of(wantedRole.id()));
+        var result = cc.filterRoles(List.of(Role.BACKEND));
 
         assertEquals(2, result.toList().size(), "wrong number of consultants");
         assertEquals(List.of(consultantWithRole, consultantWithMultipleRoles), result.toList());
@@ -91,11 +87,10 @@ class ConsultantCollectionTest {
     void filterOffices_should_ReturnOnlyConsultantsWithCorrectOffice_when_officeGiven() {
         var wantedOffice = new Office("wantedOfficeId", "wantedOffice", "no");
         var unwantedOffice = new Office("unwantedOfficeId", "unwantedOffice", "no");
-        var role = new Role("role", "roleId");
 
-        var consultantWithWantedOffice = FakeConsultant.makeConsultant("with office", List.of(role), wantedOffice);
-        var consultantWithoutWantedOffice = FakeConsultant.makeConsultant("with wrong office", List.of(role), unwantedOffice);
-        var consultantWithoutOffice = FakeConsultant.makeConsultant("without office", List.of(role), null);
+        var consultantWithWantedOffice = FakeConsultant.makeConsultant("with office", List.of(Role.BACKEND), wantedOffice);
+        var consultantWithoutWantedOffice = FakeConsultant.makeConsultant("with wrong office", List.of(Role.BACKEND), unwantedOffice);
+        var consultantWithoutOffice = FakeConsultant.makeConsultant("without office", List.of(Role.BACKEND), null);
 
         var cc = ConsultantCollection.from(List.of(
                 consultantWithWantedOffice,

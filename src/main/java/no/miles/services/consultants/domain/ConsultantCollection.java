@@ -33,10 +33,9 @@ public class ConsultantCollection {
         return consultants.keySet().stream().toList();
     }
 
-    public ConsultantCollection filterRoles(List<String> roleIds) {
+    public ConsultantCollection filterRoles(List<Role> roles) {
         var filteredConsultants = toList();
-        if (roleIds != null && !roleIds.isEmpty()) {
-            var roles = roleIds.stream().map(id -> new Role(null, id)).toList();
+        if (roles != null && !roles.isEmpty()) {
             filteredConsultants = toList().stream()
                     .filter(consultant -> consultant.roles().stream().anyMatch(roles::contains))
                     .toList();
@@ -50,6 +49,16 @@ public class ConsultantCollection {
             var offices = officeIds.stream().map(id -> new Office(id, null, null)).toList();
             filteredConsultants = filteredConsultants.stream()
                     .filter(consultant -> offices.contains(consultant.office()))
+                    .toList();
+        }
+        return ConsultantCollection.from(filteredConsultants);
+    }
+
+    public ConsultantCollection filterEmails(List<String> emails) {
+        var filteredConsultants = toList();
+        if (emails != null && !emails.isEmpty()) {
+            filteredConsultants = filteredConsultants.stream()
+                    .filter(consultant -> emails.contains(consultant.email()))
                     .toList();
         }
         return ConsultantCollection.from(filteredConsultants);

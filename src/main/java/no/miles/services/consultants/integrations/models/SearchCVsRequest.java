@@ -23,7 +23,7 @@ public record SearchCVsRequest(
                 role != null ? List.of(new Search(
                         new Exact(
                                 "custom_tag_id",
-                                role.id()
+                                role.getRoleId()
                         )
                 )) : null
         );

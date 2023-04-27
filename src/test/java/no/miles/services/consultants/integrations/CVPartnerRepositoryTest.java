@@ -29,9 +29,7 @@ class CVPartnerRepositoryTest {
 
     @Test
     void getConsultantsRole() {
-        var utvikler = new Role("frontend", "642564849b513710265e3c2c");
-
-        var consultants = cvPartnerRepository.searchConsultants(null, utvikler);
+        var consultants = cvPartnerRepository.searchConsultants(null, Role.FRONTEND);
 
         System.out.println("consultants = " + consultants);
     }

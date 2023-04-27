@@ -46,12 +46,11 @@ class CachedConsultantServiceTest {
     }
 
     @Test
-    void preHeatConsultantsCache_should_getFromService_when_cacheMiss () {
-        var roleOne = new Role("roleOne", "roleOneId");
+    void preHeatConsultantsCache_should_getFromService_when_cacheMiss() {
         var office = new Office("officeId", "name", "country");
 
         var consultants = List.of(
-                makeConsultant("consultantWithRole", List.of(roleOne), office)
+                makeConsultant("consultantWithRole", List.of(Role.BACKEND), office)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
@@ -61,12 +60,11 @@ class CachedConsultantServiceTest {
     }
 
     @Test
-    void preHeatConsultantsCache_should_getFromCa_when_cacheMiss () {
-        var roleOne = new Role("roleOne", "roleOneId");
+    void preHeatConsultantsCache_should_getFromCa_when_cacheMiss() {
         var office = new Office("officeId", "name", "country");
 
         var consultants = List.of(
-                makeConsultant("consultantWithRole", List.of(roleOne), office)
+                makeConsultant("consultantWithRole", List.of(Role.BACKEND), office)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
@@ -77,15 +75,14 @@ class CachedConsultantServiceTest {
 
     @Test
     void getConsultants_should_getConsultantCollectionFromService_when_cacheMIss() {
-        var roleOne = new Role("roleOne", "roleOneId");
         var office = new Office("officeId", "name", "country");
 
         var consultants = List.of(
-                makeConsultant("consultantWithRole", List.of(roleOne), office)
+                makeConsultant("consultantWithRole", List.of(Role.BACKEND), office)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
-        var result = cachedConsultantService.getConsultants();
+        var result = cachedConsultantService.getConsultants(null, null, null);
 
         assertEquals(consultants, result);
         verify(consultantService, times(1)).getConsultants();
@@ -96,24 +93,22 @@ class CachedConsultantServiceTest {
         var consultants = List.of(new Consultant());
         consultantsCache.get(consultantsCache.getDefaultKey(), key -> ConsultantCollection.from(consultants)).await().indefinitely();
 
-        var result = cachedConsultantService.getConsultants();
+        var result = cachedConsultantService.getConsultants(null, null, null);
 
         assertEquals(consultants, result);
     }
 
     @Test
     void getConsultantsWithFilter_should_returnConsultantWithTwoRolesFromService_when_consultantHasTwoRoles() {
-        var roleOne = new Role("roleOne", "roleOneId");
-        var roleTwo = new Role("roleTwo", "roleTwoId");
         var office = new Office("officeId", "name", "country");
         var consultants = List.of(
-                makeConsultant("consultantWithOneRole", List.of(roleOne), office),
-                makeConsultant("consultantWithTwoRoles", List.of(roleOne, roleTwo), office)
+                makeConsultant("consultantWithOneRole", List.of(Role.BACKEND), office),
+                makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND, Role.FRONTEND), office)
         );
 
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
-        var result = cachedConsultantService.getConsultants(null, List.of(roleTwo.id()));
+        var result = cachedConsultantService.getConsultants(null, List.of(Role.FRONTEND), null);
 
         assertEquals(1, result.size(), "wrong number of consultants after filtering");
 
@@ -125,17 +120,15 @@ class CachedConsultantServiceTest {
 
     @Test
     void getConsultantsWithFilter_should_returnConsultantWithCorrectOffice_when_officeFilterSet() {
-        var roleOne = new Role("roleOne", "roleOneId");
-        var roleTwo = new Role("roleTwo", "roleTwoId");
         var officeOne = new Office("officeOne", "officeOne", "country");
         var officeTwo = new Office("officeTwo", "officeTwo", "country");
         var consultants = List.of(
-                makeConsultant("consultantWithOneRole", List.of(roleOne), officeOne),
-                makeConsultant("consultantWithTwoRoles", List.of(roleOne, roleTwo), officeTwo)
+                makeConsultant("consultantWithOneRole", List.of(Role.BACKEND), officeOne),
+                makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND, Role.FRONTEND), officeTwo)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
-        var result = cachedConsultantService.getConsultants(List.of("officeTwo"), null);
+        var result = cachedConsultantService.getConsultants(List.of("officeTwo"), null, null);
 
         assertEquals(1, result.size(), "wrong number of consultants after filtering");
 
@@ -145,6 +138,20 @@ class CachedConsultantServiceTest {
         assertTrue(consultantWithTwoRoles.isPresent());
         assertEquals(officeTwo, consultantWithTwoRoles.get().office());
         assertEquals(2, consultantWithTwoRoles.get().roles().size());
-        assertEquals(Set.of(roleOne, roleTwo), consultantWithTwoRoles.get().roles());
+        assertEquals(Set.of(Role.BACKEND, Role.FRONTEND), consultantWithTwoRoles.get().roles());
+    }
+
+    @Test
+    void getConsultantsWithFilter_should_returnConsultantWithCorrectEmail_when_emailFilterSet() {
+        var consultants = List.of(
+                makeConsultant("consultantWithOneRole", List.of(Role.BACKEND), null).email("correct"),
+                makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND, Role.FRONTEND), null).email("wrong")
+        );
+        when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
+
+        var result = cachedConsultantService.getConsultants(null, null, List.of("correct"));
+
+        assertEquals(1, result.size(), "wrong number of consultants after filtering");
+        assertEquals(result.get(0).email(), "correct", "wrong consultant after filtering");
     }
 }

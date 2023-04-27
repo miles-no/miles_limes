@@ -9,6 +9,7 @@ import io.smallrye.common.constraint.NotNull;
 import no.miles.services.consultants.domain.Consultant;
 import no.miles.services.consultants.domain.ConsultantCollection;
 import no.miles.services.consultants.domain.Office;
+import no.miles.services.consultants.domain.Role;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.InternalServerErrorException;
@@ -48,16 +49,12 @@ public class CachedConsultantService {
     }
 
     @NotNull
-    public List<Consultant> getConsultants(List<String> officeIds, List<String> roleIds) {
+    public List<Consultant> getConsultants(List<String> officeIds, List<Role> roles, List<String> emails) {
         return getConsultantsInternal()
                 .filterOffices(officeIds)
-                .filterRoles(roleIds)
+                .filterRoles(roles)
+                .filterEmails(emails)
                 .toList();
-    }
-
-    @NotNull
-    public List<Consultant> getConsultants() {
-        return getConsultants(null, null);
     }
 
     private ConsultantCollection getConsultantsInternal() {

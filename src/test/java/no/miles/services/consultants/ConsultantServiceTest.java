@@ -3,9 +3,9 @@ package no.miles.services.consultants;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.junit.TestProfile;
 import io.quarkus.test.junit.mockito.InjectMock;
-import no.miles.services.consultants.integrations.CVPartnerRepository;
 import no.miles.services.consultants.domain.Office;
 import no.miles.services.consultants.domain.Role;
+import no.miles.services.consultants.integrations.CVPartnerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -31,18 +31,14 @@ class ConsultantServiceTest {
     ConsultantService consultantService;
     @InjectMock
     CVPartnerRepository cvPartnerRepository;
-    @InjectMock
-    ConsultantsConfig consultantsConfig;
 
     @Test
     void getConsultants_should_returnConsultantWithOneRoleFromService_when_cacheMIssAndConsultantHasOneRole() {
-        var roleOne = new Role("roleOne", "roleOneId");
-        var roleTwo = new Role("roleTwo", "roleTwoId");
         var office = new Office("officeId", "name", "country");
 
-        when(cvPartnerRepository.searchConsultants(isNull(), eq(roleOne)))
+        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.BACKEND)))
                 .thenReturn(new ArrayList<>(List.of(
-                        makeConsultant("consultantWithRole", List.of(roleOne), null)
+                        makeConsultant("consultantWithRole", List.of(Role.BACKEND), null)
                 )));
         when(cvPartnerRepository.searchConsultants(eq(office), isNull()))
                 .thenReturn(new ArrayList<>(List.of(
@@ -50,7 +46,6 @@ class ConsultantServiceTest {
                 )));
 
         when(cvPartnerRepository.getOffices()).thenReturn(List.of(office));
-        when(consultantsConfig.roles()).thenReturn(List.of(roleOne, roleTwo));
 
         var result = consultantService.getConsultants().toList();
 
@@ -61,25 +56,23 @@ class ConsultantServiceTest {
         Assertions.assertTrue(consultantWithRole.isPresent());
         assertEquals(office, consultantWithRole.get().office());
         assertEquals(1, consultantWithRole.get().roles().size());
-        assertIterableEquals(List.of(roleOne), consultantWithRole.get().roles());
+        assertIterableEquals(List.of(Role.BACKEND), consultantWithRole.get().roles());
 
-        verify(cvPartnerRepository, times(3)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(12)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
     }
 
     @Test
     void getConsultants_should_returnConsultantWithTwoRolesFromService_when_cacheMIssAndConsultantHasTwoRoles() {
-        var roleOne = new Role("roleOne", "roleOneId");
-        var roleTwo = new Role("roleTwo", "roleTwoId");
         var office = new Office("officeId", "name", "country");
 
-        when(cvPartnerRepository.searchConsultants(isNull(), eq(roleOne)))
+        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.BACKEND)))
                 .thenReturn(new ArrayList<>(List.of(
-                        makeConsultant("consultantWithTwoRoles", List.of(roleOne), null)
+                        makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND), null)
                 )));
-        when(cvPartnerRepository.searchConsultants(isNull(), eq(roleTwo)))
+        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.FRONTEND)))
                 .thenReturn(new ArrayList<>(List.of(
-                        makeConsultant("consultantWithTwoRoles", List.of(roleTwo), null)
+                        makeConsultant("consultantWithTwoRoles", List.of(Role.FRONTEND), null)
                 )));
         when(cvPartnerRepository.searchConsultants(eq(office), isNull()))
                 .thenReturn(new ArrayList<>(List.of(
@@ -87,7 +80,6 @@ class ConsultantServiceTest {
                 )));
 
         when(cvPartnerRepository.getOffices()).thenReturn(List.of(office));
-        when(consultantsConfig.roles()).thenReturn(List.of(roleOne, roleTwo));
 
         var result = consultantService.getConsultants().toList();
 
@@ -99,9 +91,9 @@ class ConsultantServiceTest {
         Assertions.assertTrue(consultantWithTwoRoles.isPresent());
         assertEquals(office, consultantWithTwoRoles.get().office());
         assertEquals(2, consultantWithTwoRoles.get().roles().size());
-        assertEquals(Set.of(roleOne, roleTwo), consultantWithTwoRoles.get().roles());
+        assertEquals(Set.of(Role.BACKEND, Role.FRONTEND), consultantWithTwoRoles.get().roles());
 
-        verify(cvPartnerRepository, times(3)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(12)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
     }
 }
