@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 @QuarkusTest
 @TestProfile(MockConsultantsProfile.class)
@@ -28,7 +29,7 @@ class ConsultantCollectionTest {
 
         var result = new ConsultantCollection().merge(consultants);
 
-        assertEquals(consultants, result.toList());
+        assertIterableEquals(List.of(consultantWithMultipleRoles, consultantWithRole, consultantWithoutRole), result.toList());
     }
 
     @Test
@@ -80,7 +81,7 @@ class ConsultantCollectionTest {
         var result = cc.filterRoles(List.of(Role.BACKEND));
 
         assertEquals(2, result.toList().size(), "wrong number of consultants");
-        assertEquals(List.of(consultantWithRole, consultantWithMultipleRoles), result.toList());
+        assertEquals(List.of(consultantWithMultipleRoles, consultantWithRole), result.toList());
     }
 
     @Test
@@ -102,5 +103,25 @@ class ConsultantCollectionTest {
 
         assertEquals(1, result.toList().size(), "wrong number of consultants");
         assertEquals(List.of(consultantWithWantedOffice), result.toList());
+    }
+
+    @Test
+    void toList_should_beSortedByName_when_multipleConsultants() {
+        var first = FakeConsultant.makeConsultant("first", "aaFirst aaLast", null, null);
+        var second = FakeConsultant.makeConsultant("third", "aaFirst baLast", null, null);
+        var third = FakeConsultant.makeConsultant("fourth", "aaFirst waLast", null, null);
+        var fourth = FakeConsultant.makeConsultant("second", "waFirst aaLast", null, null);
+
+        var cc = ConsultantCollection.from(List.of(
+                second,
+                first,
+                fourth,
+                third
+        ));
+
+        var result = cc.toList();
+
+        assertEquals(4, result.size());
+        assertIterableEquals(List.of(first, second, third, fourth), result);
     }
 }

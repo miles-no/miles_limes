@@ -22,4 +22,19 @@ public class FakeConsultant {
 
         return consultant;
     }
+
+    public static Consultant makeConsultant(String id, String name, List<Role> roles, Office office) {
+        var consultant = new Consultant()
+                .consultantId(id)
+                .name(name);
+
+        if (roles != null) {
+            consultant.roles(new HashSet<>(roles));
+        }
+        if (office != null) {
+            consultant.office(office);
+        }
+
+        return consultant;
+    }
 }
