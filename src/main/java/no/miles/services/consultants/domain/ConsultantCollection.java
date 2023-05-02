@@ -30,7 +30,9 @@ public class ConsultantCollection {
     }
 
     public List<Consultant> toList() {
-        return consultants.keySet().stream().toList();
+        return consultants.values().stream()
+                .sorted()
+                .toList();
     }
 
     public ConsultantCollection filterRoles(List<Role> roles) {
@@ -63,4 +65,5 @@ public class ConsultantCollection {
         }
         return ConsultantCollection.from(filteredConsultants);
     }
+
 }

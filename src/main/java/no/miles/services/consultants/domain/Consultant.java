@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Data
 @Accessors(fluent = true)
-public final class Consultant {
+public final class Consultant implements Comparable<Consultant> {
     private String name;
     private String consultantId;
     private String title;
@@ -42,5 +42,10 @@ public final class Consultant {
         }
 
         return this;
+    }
+
+    @Override
+    public int compareTo(Consultant o) {
+        return name.compareTo(o.name);
     }
 }
