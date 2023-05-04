@@ -46,6 +46,10 @@ public final class Consultant implements Comparable<Consultant> {
 
     @Override
     public int compareTo(Consultant o) {
-        return name.compareTo(o.name);
+        if (this.equals(o)) {
+            return 0;
+        } else {
+            return name.compareTo(o.name);
+        }
     }
 }
