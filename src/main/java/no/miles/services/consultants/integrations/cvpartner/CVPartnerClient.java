@@ -1,11 +1,11 @@
-package no.miles.services.consultants.integrations;
+package no.miles.services.consultants.integrations.cvpartner;
 
 import io.quarkus.rest.client.reactive.ClientExceptionMapper;
 import io.smallrye.faulttolerance.api.ExponentialBackoff;
-import no.miles.services.consultants.integrations.models.CVPartnerConsultants;
-import no.miles.services.consultants.integrations.models.Country;
-import no.miles.services.consultants.integrations.models.SearchCVsRequest;
-import no.miles.services.consultants.integrations.models.TooManyRequestException;
+import no.miles.services.consultants.integrations.cvpartner.models.CVPartnerConsultants;
+import no.miles.services.consultants.integrations.cvpartner.models.Country;
+import no.miles.services.consultants.integrations.cvpartner.models.SearchCVsRequest;
+import no.miles.services.consultants.integrations.cvpartner.models.TooManyRequestException;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.annotation.ClientHeaderParam;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;

@@ -98,6 +98,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetOfficesResponse'
+  /consultants/{consultantEmail}/image:
+    get:
+      tags:
+        - consultants
+      summary: Get single consultant
+      description: Get single consultant
+      operationId: getImage
+      parameters:
+        - in: path
+          name: consultantEmail
+          schema:
+            type: string
+          required: true
+          description: consultant email
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+  /consultants/{consultantEmail}/imagethumbnail:
+    get:
+      tags:
+        - consultants
+      summary: Get single consultant
+      description: Get single consultant
+      operationId: getImageThumbnail
+      parameters:
+        - in: path
+          name: consultantEmail
+          schema:
+            type: string
+          required: true
+          description: consultant email
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
 security:
   - app_key: [ ]
 components:

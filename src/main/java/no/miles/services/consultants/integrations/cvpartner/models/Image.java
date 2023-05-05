@@ -1,13 +1,15 @@
-package no.miles.services.consultants.integrations.models;
+package no.miles.services.consultants.integrations.cvpartner.models;
+
+import java.net.URI;
 
 public record Image(
-        String url,
+        URI url,
         WrappedUrl thumb,
         WrappedUrl fit_thumb,
         WrappedUrl large,
         WrappedUrl small_thumb
 ) {
-    public record WrappedUrl(String url) {
+    public record WrappedUrl(URI url) {
 
     }
 }

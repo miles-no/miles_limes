@@ -3,6 +3,8 @@ package no.miles.services.consultants.domain;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.File;
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -17,8 +19,10 @@ public final class Consultant implements Comparable<Consultant> {
     private String telephone;
     private Office office;
     private String email;
-    private String imageUrlThumbnail;
-    private String imageUrl;
+    private URI imageUrlThumbnail;
+    private URI imageUrl;
+    private File image;
+    private File imageThumbnail;
 
     @Override
     public boolean equals(Object o) {

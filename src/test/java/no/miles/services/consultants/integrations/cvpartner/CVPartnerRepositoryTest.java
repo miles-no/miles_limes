@@ -1,6 +1,8 @@
-package no.miles.services.consultants.integrations;
+package no.miles.services.consultants.integrations.cvpartner;
 
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.junit.TestProfile;
+import no.miles.services.consultants.MockConsultantsProfile;
 import no.miles.services.consultants.domain.Office;
 import no.miles.services.consultants.domain.Role;
 import org.junit.jupiter.api.Disabled;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import javax.inject.Inject;
 
 @QuarkusTest
+@TestProfile(MockConsultantsProfile.class)
 @Disabled
 /*
   integration tests to be run against cv partner. no test env for cv partner, so these are disabled by default.

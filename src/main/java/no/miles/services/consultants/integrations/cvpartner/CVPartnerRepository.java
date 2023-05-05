@@ -1,9 +1,9 @@
-package no.miles.services.consultants.integrations;
+package no.miles.services.consultants.integrations.cvpartner;
 
-import no.miles.services.consultants.integrations.models.CV;
-import no.miles.services.consultants.integrations.models.CVMetaData;
-import no.miles.services.consultants.integrations.models.Country;
-import no.miles.services.consultants.integrations.models.SearchCVsRequest;
+import no.miles.services.consultants.integrations.cvpartner.models.CV;
+import no.miles.services.consultants.integrations.cvpartner.models.CVMetaData;
+import no.miles.services.consultants.integrations.cvpartner.models.Country;
+import no.miles.services.consultants.integrations.cvpartner.models.SearchCVsRequest;
 import no.miles.services.consultants.domain.Consultant;
 import no.miles.services.consultants.domain.Office;
 import no.miles.services.consultants.domain.Role;

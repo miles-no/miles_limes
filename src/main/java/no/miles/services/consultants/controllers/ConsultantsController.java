@@ -2,19 +2,24 @@ package no.miles.services.consultants.controllers;
 
 import no.miles.services.consultants.CachedConsultantService;
 import no.miles.services.consultants.controllers.mappers.FromGeneratedMapper;
+import no.miles.services.consultants.domain.Consultant;
 import org.openapi.quarkus.consultants_yaml.model.GetConsultantResponse;
 import org.openapi.quarkus.consultants_yaml.model.GetOfficesResponse;
 import org.openapi.quarkus.consultants_yaml.model.Role;
 
+import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.SecurityContext;
+import java.io.File;
 import java.util.List;
 
 import static no.miles.services.consultants.controllers.mappers.ToGeneratedMapper.toGeneratedConsultant;
@@ -50,11 +55,35 @@ public class ConsultantsController {
 
     @GET
     @Path("/offices")
-    public GetOfficesResponse getOffices(
-            @Context SecurityContext ctx
-    ) {
+    public GetOfficesResponse getOffices() {
         var offices = cachedConsultantService.getOffices();
 
         return new GetOfficesResponse()._list(toGeneratedOffice(offices));
+    }
+
+    @GET
+    @Produces("image/png")
+    @PermitAll
+    @Path("/{consultantEmail}/image")
+    public File getImage(@PathParam("consultantEmail") String consultantEmail) {
+        var consultant = cachedConsultantService.getConsultants(null, null, List.of(consultantEmail))
+                .stream()
+                .findFirst()
+                .map(Consultant::image);
+
+        return consultant.orElseThrow(NotFoundException::new);
+    }
+
+    @GET
+    @Produces("image/png")
+    @PermitAll
+    @Path("/{consultantEmail}/imagethumbnail")
+    public File getImageThumbnail(@PathParam("consultantEmail") String consultantEmail) {
+        var consultant = cachedConsultantService.getConsultants(null, null, List.of(consultantEmail))
+                .stream()
+                .findFirst()
+                .map(Consultant::imageThumbnail);
+
+        return consultant.orElseThrow(NotFoundException::new);
     }
 }

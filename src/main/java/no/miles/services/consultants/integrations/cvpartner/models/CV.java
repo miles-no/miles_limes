@@ -1,4 +1,4 @@
-package no.miles.services.consultants.integrations.models;
+package no.miles.services.consultants.integrations.cvpartner.models;
 
 import no.miles.services.consultants.domain.Consultant;
 

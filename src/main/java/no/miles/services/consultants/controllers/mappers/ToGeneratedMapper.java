@@ -4,7 +4,6 @@ import org.openapi.quarkus.consultants_yaml.model.Consultant;
 import org.openapi.quarkus.consultants_yaml.model.Office;
 import org.openapi.quarkus.consultants_yaml.model.Role;
 
-import java.net.URI;
 import java.util.List;
 
 public class ToGeneratedMapper {
@@ -19,8 +18,8 @@ public class ToGeneratedMapper {
                         .officeId(c.office().officeId())
                         .country(c.office().country())
                         .email(c.email())
-                        .imageUrlThumbnail(c.imageUrlThumbnail() != null ? URI.create(c.imageUrlThumbnail()) : null)
-                        .imageUrl(c.imageUrl() != null ? URI.create(c.imageUrl()) : null)
+                        .imageUrlThumbnail(c.imageUrlThumbnail())
+                        .imageUrl(c.imageUrl())
                 )
                 .toList();
     }

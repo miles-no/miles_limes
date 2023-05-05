@@ -5,7 +5,7 @@ import io.quarkus.test.junit.TestProfile;
 import io.quarkus.test.junit.mockito.InjectMock;
 import no.miles.services.consultants.domain.Office;
 import no.miles.services.consultants.domain.Role;
-import no.miles.services.consultants.integrations.CVPartnerRepository;
+import no.miles.services.consultants.integrations.cvpartner.CVPartnerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
