@@ -2,20 +2,29 @@ openapi: 3.0.3
 info:
   title: Miles consultants api
   description: |-
-    sample internal miles api
+    The purpose of this API is to be a proxy/wrapper for the CV partner api. It exposes several endpoints for 
+    retrieving information about the consultants and offices from CV partner.
   version: 0.1.0
 servers:
   - url: https://someappname.heruko.com
 tags:
   - name: consultants
-    description: Api to retrieve consultants
+    description: |
+      Retrieve information about consultants and offices from CV partner.
 paths:
   /consultants:
     get:
       tags:
         - consultants
-      summary: Get consultants with optional filtering for office and role
-      description: Get a list of consultants
+      summary: Get consultants with optional filtering for office(s), role(s) and email
+      description: |
+        Get consultants with optional filtering for office(s), role(s) and email.
+        
+        if multiple offices are given, all consultants belonging to any of the given offices is returned. The same is 
+        true for roles and email. 
+        
+        When filters for several of "office", "role" and "email" is given the returned consultants 
+        must match all filtering conditions. i.e (any office in filter) && (any role in filter) && (any email in filter)
       operationId: getConsultants
       parameters:
         - name: officeId
@@ -28,7 +37,7 @@ paths:
               type: string
         - name: role
           in: query
-          description: role name
+          description: Role name
           required: false
           schema:
             type: array
@@ -54,7 +63,28 @@ paths:
           description: Bad Request
         403:
           description: Forbidden
-  /offices:
+  /consultants/{consultantEmail}:
+    get:
+      tags:
+        - consultants
+      summary: Get single consultant
+      description: Get single consultant
+      operationId: getConsultant
+      parameters:
+        - in: path
+          name: consultantEmail
+          schema:
+            $ref: '#/components/schemas/ConsultantEmail'
+          required: true
+          description: consultant email
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Consultant'
+  /consultants/offices:
     get:
       tags:
         - consultants
@@ -102,18 +132,30 @@ components:
           type: string
           description: iso 2 country code
         email:
-          type: string
+          $ref: '#/components/schemas/ConsultantEmail'
         imageUrlThumbnail:
           type: string
           format: uri
         imageUrl:
           type: string
           format: uri
+      example:
+        name: Navn Navnesen
+        title: Fancy IT title
+        roles: [ADVISORY, ARCHITECT]
+        telephone: "94000000"
+        office: Trondheim
+        officeId: abcdef123456
+        country: 'no'
+        email: navn.navnese@miles.no
+        imageUrlThumbnail: somevaliduri.com/imagethumb.png
+        imageUrl: somevaliduri.com/image.png
       required:
         - name
         - office
         - country
         - roles
+        - email
     GetOfficesResponse:
       type: object
       properties:
@@ -133,6 +175,10 @@ components:
         country:
           type: string
           description: iso 2 country code
+      example:
+        officeId: abcdef123456
+        name: Trondheim
+        country: 'no'
       required:
         - officeId
         - name
@@ -151,8 +197,11 @@ components:
         - TEST_MANAGEMENT
         - SERVANT_TEAM
         - DEVELOPMENT
+    ConsultantEmail:
+      type: string
+      format: email
   securitySchemes:
     app_key:
-      type: apiKey
-      name: appKey
+      type: http
+      scheme: bearer
       in: header
