@@ -50,7 +50,7 @@ class CachedConsultantServiceTest {
         var office = new Office("officeId", "name", "country");
 
         var consultants = List.of(
-                makeConsultant("consultantWithRole", List.of(Role.BACKEND), office)
+                makeConsultant("consultantWithRole", List.of(Role.DEVELOPMENT), office)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
@@ -64,7 +64,7 @@ class CachedConsultantServiceTest {
         var office = new Office("officeId", "name", "country");
 
         var consultants = List.of(
-                makeConsultant("consultantWithRole", List.of(Role.BACKEND), office)
+                makeConsultant("consultantWithRole", List.of(Role.DEVELOPMENT), office)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
@@ -78,7 +78,7 @@ class CachedConsultantServiceTest {
         var office = new Office("officeId", "name", "country");
 
         var consultants = List.of(
-                makeConsultant("consultantWithRole", List.of(Role.BACKEND), office)
+                makeConsultant("consultantWithRole", List.of(Role.DEVELOPMENT), office)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
@@ -102,13 +102,13 @@ class CachedConsultantServiceTest {
     void getConsultantsWithFilter_should_returnConsultantWithTwoRolesFromService_when_consultantHasTwoRoles() {
         var office = new Office("officeId", "name", "country");
         var consultants = List.of(
-                makeConsultant("consultantWithOneRole", List.of(Role.BACKEND), office),
-                makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND, Role.FRONTEND), office)
+                makeConsultant("consultantWithOneRole", List.of(Role.DEVELOPMENT), office),
+                makeConsultant("consultantWithTwoRoles", List.of(Role.DEVELOPMENT, Role.DESIGN), office)
         );
 
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
-        var result = cachedConsultantService.getConsultants(null, List.of(Role.FRONTEND), null);
+        var result = cachedConsultantService.getConsultants(null, List.of(Role.DESIGN), null);
 
         assertEquals(1, result.size(), "wrong number of consultants after filtering");
 
@@ -123,8 +123,8 @@ class CachedConsultantServiceTest {
         var officeOne = new Office("officeOne", "officeOne", "country");
         var officeTwo = new Office("officeTwo", "officeTwo", "country");
         var consultants = List.of(
-                makeConsultant("consultantWithOneRole", List.of(Role.BACKEND), officeOne),
-                makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND, Role.FRONTEND), officeTwo)
+                makeConsultant("consultantWithOneRole", List.of(Role.DEVELOPMENT), officeOne),
+                makeConsultant("consultantWithTwoRoles", List.of(Role.DEVELOPMENT, Role.DESIGN), officeTwo)
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
@@ -138,14 +138,14 @@ class CachedConsultantServiceTest {
         assertTrue(consultantWithTwoRoles.isPresent());
         assertEquals(officeTwo, consultantWithTwoRoles.get().office());
         assertEquals(2, consultantWithTwoRoles.get().roles().size());
-        assertEquals(Set.of(Role.BACKEND, Role.FRONTEND), consultantWithTwoRoles.get().roles());
+        assertEquals(Set.of(Role.DEVELOPMENT, Role.DESIGN), consultantWithTwoRoles.get().roles());
     }
 
     @Test
     void getConsultantsWithFilter_should_returnConsultantWithCorrectEmail_when_emailFilterSet() {
         var consultants = List.of(
-                makeConsultant("consultantWithOneRole", List.of(Role.BACKEND), null).email("correct"),
-                makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND, Role.FRONTEND), null).email("wrong")
+                makeConsultant("consultantWithOneRole", List.of(Role.DEVELOPMENT), null).email("correct"),
+                makeConsultant("consultantWithTwoRoles", List.of(Role.DEVELOPMENT, Role.DESIGN), null).email("wrong")
         );
         when(consultantService.getConsultants()).thenReturn(ConsultantCollection.from(consultants));
 
