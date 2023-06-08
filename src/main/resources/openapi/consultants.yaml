@@ -200,8 +200,9 @@ components:
     ConsultantEmail:
       type: string
       format: email
-  securitySchemes:
-    app_key:
-      type: http
-      scheme: bearer
-      in: header
+# todo: uncomment after migration to openapi server generator
+#  securitySchemes:
+#    app_key:
+#      type: http
+#      scheme: bearer
+#      in: header
