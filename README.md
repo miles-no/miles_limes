@@ -13,9 +13,9 @@ This project uses Quarkus: https://quarkus.io/ .
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
+Assuming you env variables are set, you can run your application in dev mode that enables live coding using:
 ```shell script
-./mvnw compile quarkus:dev
+./gradlew quarkusDev
 ```
 > **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
 
@@ -25,7 +25,7 @@ it is deployed with heroku as a jar.
 ## Packaging and running the application
 The application can be packaged using:
 ```shell script
-./mvnw package
+./gradlew clean build
 ```
 
 ### Creating a native executable
@@ -39,12 +39,12 @@ You can create a native executable using:
 
 Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
 ```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
+./gradlew build -Dquarkus.package.type=native
 ```
 
 You can then execute your native executable with: `./target/miles_limes-1.0.0-SNAPSHOT-runner`
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+If you want to learn more about building native executables, please consult https://quarkus.io/guides/gradle-tooling.
 
 ## Openapi
 
