@@ -29,7 +29,7 @@ class CVPartnerRepositoryTest {
 
     @Test
     void getConsultantsRole() {
-        var consultants = cvPartnerRepository.searchConsultants(null, Role.FRONTEND);
+        var consultants = cvPartnerRepository.searchConsultants(null, Role.DESIGN);
 
         System.out.println("consultants = " + consultants);
     }

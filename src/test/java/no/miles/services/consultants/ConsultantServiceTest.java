@@ -36,9 +36,9 @@ class ConsultantServiceTest {
     void getConsultants_should_returnConsultantWithOneRoleFromService_when_cacheMIssAndConsultantHasOneRole() {
         var office = new Office("officeId", "name", "country");
 
-        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.BACKEND)))
+        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.DEVELOPMENT)))
                 .thenReturn(new ArrayList<>(List.of(
-                        makeConsultant("consultantWithRole", List.of(Role.BACKEND), null)
+                        makeConsultant("consultantWithRole", List.of(Role.DEVELOPMENT), null)
                 )));
         when(cvPartnerRepository.searchConsultants(eq(office), isNull()))
                 .thenReturn(new ArrayList<>(List.of(
@@ -56,9 +56,9 @@ class ConsultantServiceTest {
         Assertions.assertTrue(consultantWithRole.isPresent());
         assertEquals(office, consultantWithRole.get().office());
         assertEquals(1, consultantWithRole.get().roles().size());
-        assertIterableEquals(List.of(Role.BACKEND), consultantWithRole.get().roles());
+        assertIterableEquals(List.of(Role.DEVELOPMENT), consultantWithRole.get().roles());
 
-        verify(cvPartnerRepository, times(12)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(9)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
     }
 
@@ -66,13 +66,13 @@ class ConsultantServiceTest {
     void getConsultants_should_returnConsultantWithTwoRolesFromService_when_cacheMIssAndConsultantHasTwoRoles() {
         var office = new Office("officeId", "name", "country");
 
-        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.BACKEND)))
+        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.DEVELOPMENT)))
                 .thenReturn(new ArrayList<>(List.of(
-                        makeConsultant("consultantWithTwoRoles", List.of(Role.BACKEND), null)
+                        makeConsultant("consultantWithTwoRoles", List.of(Role.DEVELOPMENT), null)
                 )));
-        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.FRONTEND)))
+        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.DESIGN)))
                 .thenReturn(new ArrayList<>(List.of(
-                        makeConsultant("consultantWithTwoRoles", List.of(Role.FRONTEND), null)
+                        makeConsultant("consultantWithTwoRoles", List.of(Role.DESIGN), null)
                 )));
         when(cvPartnerRepository.searchConsultants(eq(office), isNull()))
                 .thenReturn(new ArrayList<>(List.of(
@@ -91,9 +91,9 @@ class ConsultantServiceTest {
         Assertions.assertTrue(consultantWithTwoRoles.isPresent());
         assertEquals(office, consultantWithTwoRoles.get().office());
         assertEquals(2, consultantWithTwoRoles.get().roles().size());
-        assertEquals(Set.of(Role.BACKEND, Role.FRONTEND), consultantWithTwoRoles.get().roles());
+        assertEquals(Set.of(Role.DEVELOPMENT, Role.DESIGN), consultantWithTwoRoles.get().roles());
 
-        verify(cvPartnerRepository, times(12)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(9)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
     }
 }
