@@ -1,9 +1,6 @@
 package no.miles.services.consultants.domain;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ConsultantCollection {
@@ -33,6 +30,13 @@ public class ConsultantCollection {
                     .filter(consultant -> consultant.roles().stream().anyMatch(roles::contains))
                     .collect(Collectors.toSet());
         }
+        return ConsultantCollection.from(filteredConsultants);
+    }
+
+    public ConsultantCollection filterHiddenConsultants() {
+        var filteredConsultants = consultants.keySet().stream()
+                .filter(consultant -> !consultant.roles().contains(Role.HIDDEN_CONSULTANT))
+                .collect(Collectors.toSet());
         return ConsultantCollection.from(filteredConsultants);
     }
 
