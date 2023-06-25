@@ -58,7 +58,7 @@ class ConsultantServiceTest {
         assertEquals(1, consultantWithRole.get().roles().size());
         assertIterableEquals(List.of(Role.DEVELOPMENT), consultantWithRole.get().roles());
 
-        verify(cvPartnerRepository, times(9)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(10)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
     }
 
@@ -93,7 +93,7 @@ class ConsultantServiceTest {
         assertEquals(2, consultantWithTwoRoles.get().roles().size());
         assertEquals(Set.of(Role.DEVELOPMENT, Role.DESIGN), consultantWithTwoRoles.get().roles());
 
-        verify(cvPartnerRepository, times(9)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(10)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
     }
 }
