@@ -197,7 +197,6 @@ components:
         - TEST_MANAGEMENT
         - SERVANT_TEAM
         - DEVELOPMENT
-        - HIDDEN_CONSULTANT
     ConsultantEmail:
       type: string
       format: email
