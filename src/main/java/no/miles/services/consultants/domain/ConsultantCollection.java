@@ -20,7 +20,9 @@ public class ConsultantCollection {
     }
 
     public List<Consultant> toList() {
-        return consultants.values().stream().toList();
+        return consultants.values().stream()
+                .filter(consultant -> !consultant.roles().contains(Role.HIDDEN_CONSULTANT))
+                .toList();
     }
 
     public ConsultantCollection filterRoles(List<Role> roles) {
@@ -30,13 +32,6 @@ public class ConsultantCollection {
                     .filter(consultant -> consultant.roles().stream().anyMatch(roles::contains))
                     .collect(Collectors.toSet());
         }
-        return ConsultantCollection.from(filteredConsultants);
-    }
-
-    public ConsultantCollection filterHiddenConsultants() {
-        var filteredConsultants = consultants.keySet().stream()
-                .filter(consultant -> !consultant.roles().contains(Role.HIDDEN_CONSULTANT))
-                .collect(Collectors.toSet());
         return ConsultantCollection.from(filteredConsultants);
     }
 
