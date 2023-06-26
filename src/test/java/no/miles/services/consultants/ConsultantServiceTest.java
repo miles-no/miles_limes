@@ -58,7 +58,7 @@ class ConsultantServiceTest {
         assertEquals(1, consultantWithRole.get().roles().size());
         assertIterableEquals(List.of(Role.DEVELOPMENT), consultantWithRole.get().roles());
 
-        verify(cvPartnerRepository, times(9)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(10)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
     }
 
@@ -93,7 +93,29 @@ class ConsultantServiceTest {
         assertEquals(2, consultantWithTwoRoles.get().roles().size());
         assertEquals(Set.of(Role.DEVELOPMENT, Role.DESIGN), consultantWithTwoRoles.get().roles());
 
-        verify(cvPartnerRepository, times(9)).searchConsultants(any(), any());
+        verify(cvPartnerRepository, times(10)).searchConsultants(any(), any());
         verify(cvPartnerRepository, times(1)).getOffices();
+    }
+
+    @Test
+    void getConsultants_should_returnConsultantWithoutHiddenRoleFromService() {
+        var office = new Office("officeId", "name", "country");
+
+        when(cvPartnerRepository.searchConsultants(isNull(), eq(Role.DEVELOPMENT)))
+                .thenReturn(new ArrayList<>(List.of(
+                        makeConsultant("consultant", List.of(Role.DEVELOPMENT), null),
+                        makeConsultant("consultantWithHiddenRole", List.of(Role.DEVELOPMENT, Role.HIDDEN_CONSULTANT), null)
+                )));
+        when(cvPartnerRepository.searchConsultants(eq(office), isNull()))
+                .thenReturn(new ArrayList<>(List.of(
+                        makeConsultant("consultant", null, office),
+                        makeConsultant("consultantWithHiddenRole", null, office)
+                )));
+
+        when(cvPartnerRepository.getOffices()).thenReturn(List.of(office));
+
+        var result = consultantService.getConsultants().toList();
+
+        assertEquals(1, result.size());
     }
 }
