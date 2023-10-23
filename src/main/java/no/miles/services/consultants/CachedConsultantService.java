@@ -51,6 +51,7 @@ public class CachedConsultantService {
     @NotNull
     public List<Consultant> getConsultants(List<String> officeIds, List<Role> roles, List<String> emails) {
         return getConsultantsInternal()
+                .filterDeactivedConsultant()
                 .filterOffices(officeIds)
                 .filterRoles(roles)
                 .filterEmails(emails)
