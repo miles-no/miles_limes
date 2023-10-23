@@ -53,6 +53,16 @@ public class ConsultantCollection {
                     .filter(consultant -> emails.contains(consultant.email()))
                     .collect(Collectors.toSet());
         }
+                return ConsultantCollection.from(filteredConsultants);
+
+    }
+
+    public ConsultantCollection filterDeactivedConsultant() {
+        var filteredConsultants = consultants.keySet();
+        filteredConsultants = filteredConsultants.stream()
+                    .filter(consultant -> !consultant.roles().contains(Role.HIDDEN_CONSULTANT))
+                    .collect(Collectors.toSet());
+
         return ConsultantCollection.from(filteredConsultants);
     }
 
