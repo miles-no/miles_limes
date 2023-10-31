@@ -48,12 +48,6 @@ public class CachedConsultantService {
         }
     }
 
-    @Scheduled(every = "${app.services.consultants.cache-invalidate}", delay = 120)
-    void invalidateConsultantsCacheEntries() {
-        // Need to invalidate cache entries based on X-Amz-Expires value of Image S3 Pre-Signed URL
-        if (consultantCache != null) consultantCache.invalidateAll().await().indefinitely();
-    }
-
     @NotNull
     public List<Consultant> getConsultants(List<String> officeIds, List<Role> roles, List<String> emails) {
         return getConsultantsInternal()

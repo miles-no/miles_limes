@@ -2,7 +2,6 @@ app:
   services:
     consultants:
       cache-refresh: 10m
-      cache-invalidate: 1200s
 
 integrations:
   cv-partner:
